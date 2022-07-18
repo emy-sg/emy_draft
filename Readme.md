@@ -1,10 +1,10 @@
-	1- What is Webserver ?
+### 1- What is Webserver ?
 
 - "A web server is software and hardware that uses "HTTP" (Hypertext Transfer Protocol), and other protocols to respond to client "requests" made over the World Wide Web.
 
 ==> The main job of a web server is to deliver website content to users."
 
-- ressource: https://www.techtarget.com/whatis/definition/Web-server -
+- Resource: https://www.techtarget.com/whatis/definition/Web-server -
 
 It means that the "web server", is first of all a "server" which means a hardware
 The word "web" linked to the word "server" specify that the job of this server is to deliver website content to users.
@@ -14,7 +14,7 @@ The second important thing to mention, is "HTTP" (Hypertext transfer protocol),
 	
 	---------------------------------------------------
 
-	2- What is the HTTP protocol ?
+### 2- What is the HTTP protocol ?
 
 In the OSI Model, the HTTP protocol remains in the "Application Layer".
 For more information, check the link below.
@@ -25,11 +25,11 @@ For more information, check the link below.
 ==> HTTP is an "Application protocol" that runs on top of the "TCP/IP" suite of protocols, which forms the foundation of the internet.
 ==> The latest version of HTTP is "HTTP/2", but IT DOES NOT make her predecessor "HTTP 1.1" OBSOLETE." 
 
-- Ressource: https://www.techtarget.com/whatis/definition/HTTP-Hypertext-Transfer-Protocol -
+- Resource: https://www.techtarget.com/whatis/definition/HTTP-Hypertext-Transfer-Protocol -
 
 	---------------------------------------------------
 
-	3- Why TCP and not UDP ?
+### 3- Why TCP and not UDP ?
 
 HTTP is a "client-server" protocol, which means that when the client wants to communicate with a server, it performs the following steps:
 
@@ -43,11 +43,11 @@ So, why HTTP would use TCP over UDP ?
 ==> bcuz TCP is realiable, and HTTP requires realiable delivery.
 We need TCP connection, to eastablish a connection between the client and server before sending any data, to guarantie transmission realiability and completeness.  
 
-- Ressource: https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview -
+- Resource: https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview -
 
 	---------------------------------------------------
 
-	4- What is socket (in Computer Network) ?
+### 4- What is socket (in Computer Network) ?
 
 - We talked about sending and receiving data between the client and the server over the Internet.
 	- How ?? 
@@ -66,11 +66,11 @@ We need TCP connection, to eastablish a connection between the client and server
 - There is two type of sockets, "Datagram Socket" which we are not using and we don't care about, and "Stream Socket" that gonna serve us with the transfer of data.
 ==> A socket is created using "socket()" system call.
 
-- Ressource: https://www.geeksforgeeks.org/socket-in-computer-network/
+- Resource: https://www.geeksforgeeks.org/socket-in-computer-network/
 
 	---------------------------------------------------
 	
-	5- TCP client socket() vs TCP server socket()
+### 5- TCP client socket() vs TCP server socket()
 
 1- TCP Client:
 	- the client creates a socket using a call to "socket()" fct.
@@ -85,13 +85,13 @@ We need TCP connection, to eastablish a connection between the client and server
 ==> Repeated calls to "accept()" allow the server to handle multiple clients.
 	- This new socket created by accept() fct, can be used to exchange data with the client using "send()" and "recv()".
 
-==> Now you are ready to write your first program, for more information about how to create a socket the link in below;
+==> Now you are ready to write your first program, for more information about how to create a socket the link in below
 
-- Ressources: https://www.gta.ufrj.br/ensino/eel878/sockets/index.html - 
+- Resources: https://www.gta.ufrj.br/ensino/eel878/sockets/index.html - 
 
 	---------------------------------------------------
 
-	6- What is Blocking in networking ?
+### 6- What is Blocking in networking ?
 
 - You probably notice that when you run listen() fct, it sits there until a packet arrives(request).
 ==> What happened is that the listen() fct call "recvfrom()" fct, and if there was no data, this fct it said "block" (that sleep there) until some data arrives.
@@ -103,7 +103,7 @@ Why ??
 
 	---------------------------------------------------
 	
-	7- What is Multiplexing is used for ?
+### 7- What is Multiplexing is used for ?
 
 - By setting a socket to non-blocking, you can effectively "poll" the sokcet for information.
 
@@ -119,7 +119,7 @@ Why ??
 ==> There is multiple types of multplexing:
 "poll()", "select()", ...
 
-- Ressource: 
+- Resource: 
 	==> poll() : 
 	==> select():
 
