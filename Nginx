@@ -1,0 +1,156 @@
+
+How Ngnix works ??
+
+To discover this and more, u have to install Nginx in ur machine OR a VM.
+And VOILA, let's dive in ...
+
+First of all, u have to look to the default config file of nginx.
+The config file of nginx is pretty complicated there is a lot of blocks that we don't have to simulate in our webserv, we gonna focus only on the HTTP block, to build our HTTP webserver.
+
+The path of the file that we gonna use in our testing is: "/etc/nginx/sites-available/default"
+
+Example: 
+
+server {
+	listen 80;
+	server_name localhost;
+
+	location / {
+		root /var/www/nginx-default;
+		index index.html index.htm;
+	}
+}
+
+Description:
+
+==> In the example above, we have only ONE server, that listen on port 80 in the interface (localhost: 127.0.0.1), check the networking socket part to understand how it really works.
+
+==> Second thing to discuss is the "location block", so what is the location block is used for?
+In your server you can have multiple blocks of locations
+Each location have some directives, when and how to serve the client the ressources.
+
+- To serve a client a ressource you have to choose from which location, if none location exist, you must have the root directive within your server.
+- Location syntax:
+	location /PATH {
+		directive_one;
+		directive_two;
+		....
+	}
+
+==> The location block can have root directive in "absolute path", and the "indexes" files, for example.
+
+- You compare the URL received in the request send by the client, with the locations Path to choose the right location.
+How to choose the right location ??
+
+The URL is also absolute path, so:
+	URL is /.../.../.../ and Path of location is /***/***/***
+
+first of all we compare the all URL string with the location path,
+if u find one of the locations(in case multiple location) much the URL string,
+==> so we find the right location.
+But if we didn't, we truncat the last slash from the URL and research if there is any of the truncate URL much one of the locations.
+And ainsi de suite, til '/' in case we coudn't find any location that much,
+In this case, if you have the location '/', we can use this location as default location, if we can't find the default location make sure you have the root directive within your server to use it.
+
+ps: It's just a simple example to have an idea about the config file.
+you can make your own configfile, but it must have the elements in the subject.
+using nginx as reference helps alot in testing, and understanding of the subject.
+
+==> From here we can imagine how important to parse our config file to have an idea how much servers we have, and how much locations in each server, before launching our server sockets to listenning mode, to new connections from any clients.
+
+PS:
+
+I know it's alot of infos here, but to have more structered infos about the HTTP server, this book helped me alot:
+ Click GET to download the book:
+	 http://library.lol/main/739DBA0D69B8A300D3F30D4EB7A1C182
+
+		--------------------------------------------
+
+1- Config file like nginx:
+
+I really strugle with this part, cuz I didn't know what directives should I support.
+
+http {
+
+	// Create a new server
+	server {
+		// the directives 
+
+		listen 80;	// host:port	
+		server_name example.com;	//string
+
+		root	/home/emy/emyDrafts_webserv;	// path to the root
+
+		allowed_method GET DELETE POST;	// method allowed request
+		error_pages 404 /my_404_error_pages.html; // I used the absolute path 
+		client_max_body_size 1000;	// used in the upload with the POST method
+
+		// Create a location
+		location /path {
+			root /home/emy/emyDrafts_webserv/file.html;
+			
+			allowed_method GET;
+
+			error_pages 404 /my_location_errors;
+
+			client_max_body_size 10; 
+
+			redirection 305 /path; // ==> to redirect the client to another path
+			cgi_php /path;	// in case of .php file, the path is the path to the php compiler
+			upload /path_to_upload; // ==> The path where to upload the body in case of POST method
+		}
+	}
+
+}
+
+ 		--------------------------------------------
+2- Parsing the Request:
+
+The second Important part in our webserv Project, is Parsing the Request.
+
+==> Parsing the request, is the third important part after parsing the config file and creating a socket.
+
+- Request Line: ALLOWED_METHOD /URL HTTP/1.1
+- Other important Headers: 
+	- Host(server_name): example.com
+	- In case of body:
+		==> Content_Length: 1000
+			OR
+		==> Transfer_encoding: Chunked.
+	- Connection_type: Keep-Alive / close.
+
+with: 
+ALLOWED_METHOD: GET Or POST Or DELETE
+
+P.S: 
+	you can receive more header, but those are the important one.
+
+Example:
+
+	GET / HTTP/1.1
+	User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+	Accept-Language: en-US
+	Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+	Accept-Encoding: gzip, deflate
+	Host: example.com
+	Connection: Keep-Alive
+
+		---------------------------------------------
+
+3- Generate Response (HTTP diagram)
+
+Now that our webserv has all the needed information to deliver the right ressource to the client.
+	
+1- Get the matched location of the Requested URL.
+2- Check if the we have a redirection in the location that we matched.
+==> If redirection exist in location we deliver the redirection path to the client.
+3- if the method in the request is supported in the location(if not 405 method not allowed).
+4- GET treatement
+ - POST treatement
+ - DELETE treatement
+5- cgi (the path to the compiler).
+
+Below an image that represent and the cases of generating a response,
+with the corresponding error_pages to deliver, link below:
+	https://github.com/kirwa-KO/webserv-request-flow
+
