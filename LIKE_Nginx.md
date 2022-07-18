@@ -10,6 +10,7 @@ The first thing we gonna do is install nginx in our machine and start testing, b
 1- Config file like nginx:
 I really strugle with this part, cuz I didn't know what directives should I support.
 
+``` C++
 http {
 
 	// Create a new server
@@ -43,3 +44,4 @@ http {
 
 
 }
+```
